@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hotelapp/Data/user.dart';
 import 'package:hotelapp/Services/userDB.dart';
 
+import '../../Utils/global.dart';
+
 class UserSignUp extends StatefulWidget {
   const UserSignUp({super.key});
 
@@ -25,13 +27,13 @@ class _UserSignUpState extends State<UserSignUp> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: const Color.fromARGB(255, 31, 42, 27),
+        backgroundColor: darkGreen1,
         elevation: 0,
       ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        color: const Color.fromARGB(255, 31, 42, 27),
+        color: darkGreen1,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 64),

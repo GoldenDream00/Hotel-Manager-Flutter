@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hotelapp/UI/Admin/home.dart';
 import 'package:hotelapp/UI/onboard.dart';
+import 'package:hotelapp/Utils/global.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/onBoard',
+      home: AdminHome(),
       routes: {
         '/onBoard': (context) => const OnBoard(),
         '/userHome': (context) => const OnBoard(),

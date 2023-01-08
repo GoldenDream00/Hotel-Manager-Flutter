@@ -2,12 +2,12 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../Data/user.dart';
+import '../Data/room.dart';
 
-class UserDBProvider {
-  UserDBProvider._();
-  String table = "User";
-  static final UserDBProvider db = UserDBProvider._();
+class RoomDBProvider {
+  RoomDBProvider._();
+  String table = "Room";
+  static final RoomDBProvider db = RoomDBProvider._();
 
   static Database? _database;
   Future<Database> get database async => _database ??= await initDB();
@@ -19,51 +19,51 @@ class UserDBProvider {
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE $table ("
           "id INTEGER PRIMARY KEY,"
+          "cid INTEGER,"
           "name TEXT,"
-          "password TEXT,"
-          "phone TEXT,"
-          "email TEXT"
+          "type TEXT,"
+          "occupied INTEGER"
           ")");
     });
   }
 
-  newUser(User entry) async {
+  newRoom(Room entry) async {
     final db = await database;
     var res = await db.insert(table, entry.toMap());
     return res;
   }
 
-  getAllUser() async {
+  getAllRoom() async {
     final db = await database;
     var res = await db.query(
       table,
-      orderBy: "name ASC",
+      orderBy: "occupied DESC",
     );
-    List<User> list =
-        res.isNotEmpty ? res.map((c) => User.fromMap(c)).toList() : [];
+    List<Room> list =
+        res.isNotEmpty ? res.map((c) => Room.fromMap(c)).toList() : [];
     return list;
   }
 
-  searchuser(String name) async {
+  searchRoom(int cid) async {
     final db = await database;
-    var res = await db.query(table, where: "name = ?", whereArgs: [name]);
-    return res.isNotEmpty ? User.fromMap(res.first) : Null;
+    var res = await db.query(table, where: "cid = ?", whereArgs: [cid]);
+    return res.isNotEmpty ? Room.fromMap(res.first) : Null;
   }
 
-  getUser(int id) async {
+  getRoom(int id) async {
     final db = await database;
     var res = await db.query(table, where: "id = ?", whereArgs: [id]);
-    return res.isNotEmpty ? User.fromMap(res.first) : Null;
+    return res.isNotEmpty ? Room.fromMap(res.first) : Null;
   }
 
-  updateUser(User entry) async {
+  updateRoom(Room entry) async {
     final db = await database;
     var res = await db
         .update(table, entry.toMap(), where: "id = ?", whereArgs: [entry.id]);
     return res;
   }
 
-  deleteUser(int id) async {
+  deleteRoom(int id) async {
     final db = await database;
     db.delete(table, where: "id = ?", whereArgs: [id]);
   }
