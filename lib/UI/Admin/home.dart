@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hotelapp/UI/Admin/room.dart';
-
+import '../../Services/roomDB.dart';
 import '../../Utils/global.dart';
+import 'Room/newDialog.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
@@ -14,27 +15,6 @@ class _AdminHomeState extends State<AdminHome> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Room(),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +23,11 @@ class _AdminHomeState extends State<AdminHome> {
         toolbarHeight: 72,
         backgroundColor: darkGreen2,
         elevation: 0,
-        title: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Text(
-            "Admin Portal",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-            ),
-          ),
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.power_settings_new, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', ModalRoute.withName('/')),
           ),
         ],
       ),
@@ -64,11 +35,7 @@ class _AdminHomeState extends State<AdminHome> {
         height: double.infinity,
         width: double.infinity,
         color: darkGreen2,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -99,5 +66,19 @@ class _AdminHomeState extends State<AdminHome> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  // ignore: prefer_final_fields
+  late List<Widget> _widgetOptions = <Widget>[
+    Room(),
+    const Text('Index 1: Business', style: optionStyle),
+    const Text('Index 2: School', style: optionStyle),
+    const Text('Index 3: Settings', style: optionStyle),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 }

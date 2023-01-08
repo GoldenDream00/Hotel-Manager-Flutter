@@ -5,8 +5,7 @@ import 'package:hotelapp/Utils/global.dart';
 import '../../../Services/roomDB.dart';
 
 class NewRoomForm extends StatefulWidget {
-  VoidCallback? listUpdator;
-  NewRoomForm({Key? key, listUpdator}) : super(key: key);
+  const NewRoomForm({super.key});
 
   @override
   NewRoomFormState createState() => NewRoomFormState();
@@ -27,8 +26,12 @@ class NewRoomFormState extends State<NewRoomForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: darkGreen1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
       content: Container(
         width: 300,
+        padding: EdgeInsets.symmetric(vertical: 24),
+        color: darkGreen1,
         child: Form(
           key: _formKey,
           child: Column(
@@ -38,11 +41,11 @@ class NewRoomFormState extends State<NewRoomForm> {
                 "New Room",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 24,
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               TextFormField(
                 controller: nameController,
                 style: formTextDecoration,
@@ -56,26 +59,35 @@ class NewRoomFormState extends State<NewRoomForm> {
                 },
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField(
-                value: dropdownValue,
-                decoration: InputDecoration(
-                  fillColor: Colors.white38,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100.0)),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white12,
+                  borderRadius: BorderRadius.circular(100.0),
                 ),
-                dropdownColor: Colors.black,
-                icon: const Icon(Icons.arrow_drop_down),
-                elevation: 16,
-                style: const TextStyle(color: Colors.white),
-                onChanged: (String? value) {
-                  setState(() {
-                    dropdownValue = value!;
-                  });
-                },
-                items: type.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                      value: value, child: Text(value));
-                }).toList(),
+                child: DropdownButtonFormField(
+                  value: dropdownValue,
+                  dropdownColor: darkGreen2,
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+                  ),
+                  icon: const Icon(Icons.arrow_drop_down),
+                  style: const TextStyle(color: Colors.white),
+                  onChanged: (String? value) {
+                    setState(() {
+                      dropdownValue = value!;
+                    });
+                  },
+                  items: type.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: formTextDecoration,
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               const SizedBox(height: 40),
               Container(
@@ -134,14 +146,13 @@ class NewRoomFormState extends State<NewRoomForm> {
     entry.name = nameController.text;
     entry.type = dropdownValue;
     entry.occupied = 0;
+    entry.cid = -1;
 
     var db = RoomDBProvider.db;
     db.newRoom(entry);
     List<Room> temp = await db.getAllRoom();
     print(temp.length);
-    widget.listUpdator!();
 
-    // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
 }

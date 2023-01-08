@@ -155,7 +155,7 @@ class _AdminLoginState extends State<AdminLogin> {
 
     if (pass == "root" && name == "admin") {
       msg = "";
-      print("Success :D");
+      Navigator.pushNamed(context, '/adminHome');
     } else {
       setState(() {
         msg = "Username or password is incorrect";

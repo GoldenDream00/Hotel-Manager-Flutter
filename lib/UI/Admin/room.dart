@@ -12,41 +12,51 @@ class Room extends StatefulWidget {
 }
 
 class _RoomState extends State<Room> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white);
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: RoomDBProvider.db.getAllRoom(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.data != null) {
-            return ListView(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              children: [
-                const Text('Rooms', style: optionStyle),
-                const SizedBox(height: 24),
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  reverse: true,
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return RoomTile(
-                      entry: snapshot.data?[index],
-                      listUpdator: () => listUpdator(),
-                    );
-                  },
-                ),
-                const SizedBox(height: 140),
-              ],
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+      backgroundColor: darkGreen2,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: FutureBuilder(
+          future: RoomDBProvider.db.getAllRoom(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.data != null) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Rooms',
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                  const SizedBox(height: 24),
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      print(snapshot.data[index].name);
+                      return RoomTile(
+                        entry: snapshot.data[index],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 140),
+                ],
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: customFAB(context),
@@ -55,26 +65,18 @@ class _RoomState extends State<Room> {
 
   customFAB(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => newTodoDialog(context),
+      onPressed: () => newRoomDialog(context),
       backgroundColor: Colors.lightGreen,
       child: const Icon(Icons.add),
     );
   }
 
-  newTodoDialog(BuildContext context) {
+  newRoomDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return NewRoomForm(
-          listUpdator: () => listUpdator(),
-        );
+        return NewRoomForm();
       },
-    );
-  }
-
-  listUpdator() {
-    setState(() {
-      RoomDBProvider.db.getAllRoom();
-    });
+    ).then((value) => setState(() {}));
   }
 }

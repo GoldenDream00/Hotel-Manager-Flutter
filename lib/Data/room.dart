@@ -1,9 +1,9 @@
 class Room {
   int? id;
-  int? cid;
-  String? name;
-  String? type;
-  int? occupied;
+  int cid = -1;
+  String name = "";
+  String type = "";
+  int occupied = 0;
 
   Room({
     int? id,

@@ -1,9 +1,9 @@
 class User {
   int? id;
-  String? name;
-  String? password;
-  String? phone;
-  String? email;
+  String name = "";
+  String password = "";
+  String phone = "";
+  String email = "";
 
   User({
     int? id,

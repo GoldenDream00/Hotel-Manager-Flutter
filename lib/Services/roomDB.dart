@@ -14,7 +14,7 @@ class RoomDBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB.db");
+    String path = join(documentsDirectory.path, "room.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE $table ("
@@ -37,7 +37,7 @@ class RoomDBProvider {
     final db = await database;
     var res = await db.query(
       table,
-      orderBy: "occupied DESC",
+      orderBy: "occupied DESC, name ASC",
     );
     List<Room> list =
         res.isNotEmpty ? res.map((c) => Room.fromMap(c)).toList() : [];
