@@ -12,6 +12,8 @@ class _AdminLoginState extends State<AdminLogin> {
   TextEditingController userController = TextEditingController();
   TextEditingController passController = TextEditingController();
   String msg = "";
+  String adminUserName = "admin";
+  String adminPassword = "root";
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +155,7 @@ class _AdminLoginState extends State<AdminLogin> {
     var name = userController.text;
     var pass = passController.text;
 
-    if (pass == "root" && name == "admin") {
+    if (pass == adminPassword && name == adminUserName) {
       msg = "";
       Navigator.pushNamed(context, '/adminHome');
     } else {

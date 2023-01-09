@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hotelapp/Data/room.dart' as data;
 import 'package:hotelapp/Utils/global.dart';
-import '../../Services/roomDB.dart';
-import 'Room/newDialog.dart';
-import 'Room/roomTile.dart';
+import '../../../Services/roomDB.dart';
+import 'newDialog.dart';
+import 'roomTile.dart';
+import 'updateDialog.dart';
 
 class Room extends StatefulWidget {
   const Room({super.key});
@@ -43,9 +45,9 @@ class _RoomState extends State<Room> {
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      print(snapshot.data[index].name);
                       return RoomTile(
                         entry: snapshot.data[index],
+                        updateRoomDialog: updateRoomDialog,
                       );
                     },
                   ),
@@ -76,6 +78,15 @@ class _RoomState extends State<Room> {
       context: context,
       builder: (BuildContext context) {
         return NewRoomForm();
+      },
+    ).then((value) => setState(() {}));
+  }
+
+  updateRoomDialog(BuildContext context, data.Room entry) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return UpdateRoomForm(entry: entry);
       },
     ).then((value) => setState(() {}));
   }

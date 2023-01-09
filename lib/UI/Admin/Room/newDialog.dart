@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotelapp/Data/room.dart';
 import 'package:hotelapp/Utils/global.dart';
-
 import '../../../Services/roomDB.dart';
 
 class NewRoomForm extends StatefulWidget {
@@ -14,6 +13,7 @@ class NewRoomForm extends StatefulWidget {
 class NewRoomFormState extends State<NewRoomForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  String dropdownValue = type.first;
 
   static const List<String> type = <String>[
     'Single',
@@ -21,7 +21,6 @@ class NewRoomFormState extends State<NewRoomForm> {
     'Suite',
     'Luxury'
   ];
-  String dropdownValue = type.first;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,6 @@ class NewRoomFormState extends State<NewRoomForm> {
       content: Container(
         width: 300,
         padding: EdgeInsets.symmetric(vertical: 24),
-        color: darkGreen1,
         child: Form(
           key: _formKey,
           child: Column(
@@ -138,8 +136,6 @@ class NewRoomFormState extends State<NewRoomForm> {
       fillColor: Colors.white10,
     );
   }
-
-  typeSelectMenu() {}
 
   onPressedCreate() async {
     Room entry = Room();

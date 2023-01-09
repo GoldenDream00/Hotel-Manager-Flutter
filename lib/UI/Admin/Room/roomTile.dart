@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hotelapp/Data/room.dart';
 import 'package:hotelapp/Utils/global.dart';
 
+typedef updateCallback = void Function(BuildContext context, Room entry);
+
 class RoomTile extends StatefulWidget {
   final Room entry;
-  RoomTile({super.key, required this.entry});
+  final updateCallback updateRoomDialog;
+  RoomTile({super.key, required this.entry, required this.updateRoomDialog});
 
   @override
   RoomTileState createState() => RoomTileState();
@@ -38,9 +41,7 @@ class RoomTileState extends State<RoomTile> {
           ),
           IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () {
-                print("hello");
-              },
+              onPressed: () => widget.updateRoomDialog(context, widget.entry),
               icon: const Icon(
                 Icons.edit_outlined,
                 color: Colors.lightGreen,
