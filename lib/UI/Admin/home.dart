@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hotelapp/UI/Admin/Room/room.dart';
 import '../../Utils/global.dart';
+import 'Dish/dish.dart';
+import 'Employee/employee.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
@@ -70,8 +72,8 @@ class _AdminHomeState extends State<AdminHome> {
   // ignore: prefer_final_fields
   late List<Widget> _widgetOptions = <Widget>[
     const Room(),
-    const Text('Index 1: Business', style: optionStyle),
-    const Text('Index 2: School', style: optionStyle),
+    const Dish(),
+    const Employee(),
     const Text('Index 3: Settings', style: optionStyle),
   ];
 

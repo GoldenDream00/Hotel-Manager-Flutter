@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:hotelapp/Data/room.dart';
 import 'package:hotelapp/Utils/global.dart';
-import '../../../Services/roomDB.dart';
+import '../../../Data/dish.dart';
+import '../../../Services/dishDB.dart';
 
-class NewRoomForm extends StatefulWidget {
-  const NewRoomForm({super.key});
+class NewDishForm extends StatefulWidget {
+  const NewDishForm({super.key});
 
   @override
-  NewRoomFormState createState() => NewRoomFormState();
+  NewDishFormState createState() => NewDishFormState();
 }
 
-class NewRoomFormState extends State<NewRoomForm> {
+class NewDishFormState extends State<NewDishForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController numController = TextEditingController();
+  TextEditingController photoController = TextEditingController();
   String dropdownValue = type.first;
 
   static const List<String> type = <String>[
-    'Single',
-    'Double',
-    'Suite',
-    'Luxury'
+    'Drinks',
+    'Veg',
+    'Non-Veg',
+    'Snack'
   ];
 
   @override
@@ -38,7 +40,7 @@ class NewRoomFormState extends State<NewRoomForm> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 const Text(
-                  "New Room",
+                  "New Dish",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
@@ -50,7 +52,34 @@ class NewRoomFormState extends State<NewRoomForm> {
                   controller: nameController,
                   style: formTextDecoration,
                   cursorColor: Colors.lightGreen,
-                  decoration: formFieldDecoration("Room No."),
+                  decoration: formFieldDecoration("Dish Name"),
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return "*This is a required Field";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: numController,
+                  style: formTextDecoration,
+                  keyboardType: TextInputType.number,
+                  cursorColor: Colors.lightGreen,
+                  decoration: formFieldDecoration("Stock"),
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return "*This is a required Field";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: photoController,
+                  style: formTextDecoration,
+                  cursorColor: Colors.lightGreen,
+                  decoration: formFieldDecoration("Photo URL"),
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return "*This is a required Field";
@@ -104,7 +133,7 @@ class NewRoomFormState extends State<NewRoomForm> {
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
                       child: Text(
-                        "Create Room",
+                        "Create Dish",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -142,15 +171,15 @@ class NewRoomFormState extends State<NewRoomForm> {
   }
 
   onPressedCreate() async {
-    Room entry = Room();
+    Dish entry = Dish();
     entry.name = nameController.text;
     entry.type = dropdownValue;
-    entry.occupied = 0;
-    entry.cid = -1;
+    entry.num = int.parse(numController.text);
+    entry.photo = photoController.text;
 
-    var db = RoomDBProvider.db;
-    db.newRoom(entry);
-    List<Room> temp = await db.getAllRoom();
+    var db = DishDBProvider.db;
+    db.newDish(entry);
+    List<Dish> temp = await db.getAllDish();
     print(temp.length);
 
     Navigator.pop(context);

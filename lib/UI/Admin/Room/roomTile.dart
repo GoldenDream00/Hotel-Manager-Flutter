@@ -34,7 +34,6 @@ class RoomTileState extends State<RoomTile> {
             widget.entry.name,
             style: textDecoration,
           ),
-          const SizedBox(height: 2),
           Text(
             widget.entry.type,
             style: textDecoration,
@@ -45,6 +44,7 @@ class RoomTileState extends State<RoomTile> {
               icon: const Icon(
                 Icons.edit_outlined,
                 color: Colors.lightGreen,
+                size: 20,
               ))
         ],
       ),
@@ -59,15 +59,17 @@ class RoomTileState extends State<RoomTile> {
 
   circleOn() {
     return const Icon(
-      Icons.task_alt,
+      Icons.check_box_rounded,
       color: Colors.lightGreen,
+      size: 20,
     );
   }
 
   circleOff() {
     return const Icon(
-      Icons.circle_outlined,
-      color: Colors.white70,
+      Icons.remove,
+      color: Colors.white54,
+      size: 20,
     );
   }
 }

@@ -2,12 +2,12 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../Data/user.dart';
+import '../Data/employee.dart';
 
-class UserDBProvider {
-  UserDBProvider._();
-  String table = "User";
-  static final UserDBProvider db = UserDBProvider._();
+class EmployeeDBProvider {
+  EmployeeDBProvider._();
+  String table = "Employee";
+  static final EmployeeDBProvider db = EmployeeDBProvider._();
 
   static Database? _database;
   Future<Database> get database async => _database ??= await initDB();
@@ -19,51 +19,49 @@ class UserDBProvider {
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE $table ("
           "id INTEGER PRIMARY KEY,"
+          "present INTEGER,"
           "name TEXT,"
-          "password TEXT,"
-          "phone TEXT,"
-          "email TEXT"
+          "phone TEXT"
           ")");
     });
   }
 
-  newUser(User entry) async {
+  newEmployee(Employee entry) async {
     final db = await database;
     var res = await db.insert(table, entry.toMap());
     return res;
   }
 
-  getAllUser() async {
+  getAllEmployee() async {
     final db = await database;
     var res = await db.query(
       table,
-      orderBy: "name ASC",
+      orderBy: "present, name",
     );
-    List<User> list =
-        res.isNotEmpty ? res.map((c) => User.fromMap(c)).toList() : [];
+    List<Employee> list =
+        res.isNotEmpty ? res.map((c) => Employee.fromMap(c)).toList() : [];
     return list;
   }
 
-  searchuser(String name) async {
-    final db = await database;
-    var res = await db.query(table, where: "name = ?", whereArgs: [name]);
-    return res.isNotEmpty ? User.fromMap(res.first) : Null;
-  }
-
-  getUser(int id) async {
+  getEmployee(int id) async {
     final db = await database;
     var res = await db.query(table, where: "id = ?", whereArgs: [id]);
-    return res.isNotEmpty ? User.fromMap(res.first) : Null;
+    return res.isNotEmpty ? Employee.fromMap(res.first) : Null;
   }
 
-  updateUser(User entry) async {
+  resetAttendance() async {
+    final db = await database;
+    db.rawDelete("Update $table set present = 0");
+  }
+
+  updateEmployee(Employee entry) async {
     final db = await database;
     var res = await db
         .update(table, entry.toMap(), where: "id = ?", whereArgs: [entry.id]);
     return res;
   }
 
-  deleteUser(int id) async {
+  deleteEmployee(int id) async {
     final db = await database;
     db.delete(table, where: "id = ?", whereArgs: [id]);
   }

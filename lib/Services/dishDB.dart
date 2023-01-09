@@ -2,12 +2,12 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../Data/user.dart';
+import '../Data/dish.dart';
 
-class UserDBProvider {
-  UserDBProvider._();
-  String table = "User";
-  static final UserDBProvider db = UserDBProvider._();
+class DishDBProvider {
+  DishDBProvider._();
+  String table = "Dish";
+  static final DishDBProvider db = DishDBProvider._();
 
   static Database? _database;
   Future<Database> get database async => _database ??= await initDB();
@@ -19,51 +19,45 @@ class UserDBProvider {
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE $table ("
           "id INTEGER PRIMARY KEY,"
+          "num INTEGER,"
           "name TEXT,"
-          "password TEXT,"
-          "phone TEXT,"
-          "email TEXT"
+          "type TEXT,"
+          "photo TEXT"
           ")");
     });
   }
 
-  newUser(User entry) async {
+  newDish(Dish entry) async {
     final db = await database;
     var res = await db.insert(table, entry.toMap());
     return res;
   }
 
-  getAllUser() async {
+  getAllDish() async {
     final db = await database;
     var res = await db.query(
       table,
-      orderBy: "name ASC",
+      orderBy: "type ASC, name ASC",
     );
-    List<User> list =
-        res.isNotEmpty ? res.map((c) => User.fromMap(c)).toList() : [];
+    List<Dish> list =
+        res.isNotEmpty ? res.map((c) => Dish.fromMap(c)).toList() : [];
     return list;
   }
 
-  searchuser(String name) async {
-    final db = await database;
-    var res = await db.query(table, where: "name = ?", whereArgs: [name]);
-    return res.isNotEmpty ? User.fromMap(res.first) : Null;
-  }
-
-  getUser(int id) async {
+  getDish(int id) async {
     final db = await database;
     var res = await db.query(table, where: "id = ?", whereArgs: [id]);
-    return res.isNotEmpty ? User.fromMap(res.first) : Null;
+    return res.isNotEmpty ? Dish.fromMap(res.first) : Null;
   }
 
-  updateUser(User entry) async {
+  updateDish(Dish entry) async {
     final db = await database;
     var res = await db
         .update(table, entry.toMap(), where: "id = ?", whereArgs: [entry.id]);
     return res;
   }
 
-  deleteUser(int id) async {
+  deleteDish(int id) async {
     final db = await database;
     db.delete(table, where: "id = ?", whereArgs: [id]);
   }

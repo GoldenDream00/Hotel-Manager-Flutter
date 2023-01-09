@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hotelapp/Data/room.dart';
 import 'package:hotelapp/Utils/global.dart';
-import '../../../Services/roomDB.dart';
+import '../../../Data/employee.dart';
+import '../../../Services/employeeDB.dart';
 
-class NewRoomForm extends StatefulWidget {
-  const NewRoomForm({super.key});
+class NewEmployeeForm extends StatefulWidget {
+  const NewEmployeeForm({super.key});
 
   @override
-  NewRoomFormState createState() => NewRoomFormState();
+  NewEmployeeFormState createState() => NewEmployeeFormState();
 }
 
-class NewRoomFormState extends State<NewRoomForm> {
+class NewEmployeeFormState extends State<NewEmployeeForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
-  String dropdownValue = type.first;
-
-  static const List<String> type = <String>[
-    'Single',
-    'Double',
-    'Suite',
-    'Luxury'
-  ];
+  TextEditingController phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +31,7 @@ class NewRoomFormState extends State<NewRoomForm> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 const Text(
-                  "New Room",
+                  "New Employee",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
@@ -50,7 +43,7 @@ class NewRoomFormState extends State<NewRoomForm> {
                   controller: nameController,
                   style: formTextDecoration,
                   cursorColor: Colors.lightGreen,
-                  decoration: formFieldDecoration("Room No."),
+                  decoration: formFieldDecoration("Employee Name"),
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return "*This is a required Field";
@@ -59,35 +52,18 @@ class NewRoomFormState extends State<NewRoomForm> {
                   },
                 ),
                 const SizedBox(height: 16),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white12,
-                    borderRadius: BorderRadius.circular(100.0),
-                  ),
-                  child: DropdownButtonFormField(
-                    value: dropdownValue,
-                    dropdownColor: darkGreen2,
-                    decoration: const InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
-                    ),
-                    icon: const Icon(Icons.arrow_drop_down),
-                    style: const TextStyle(color: Colors.white),
-                    onChanged: (String? value) {
-                      setState(() {
-                        dropdownValue = value!;
-                      });
-                    },
-                    items: type.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: formTextDecoration,
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                TextFormField(
+                  controller: phoneController,
+                  style: formTextDecoration,
+                  keyboardType: TextInputType.number,
+                  cursorColor: Colors.lightGreen,
+                  decoration: formFieldDecoration("Phone Number"),
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return "*This is a required Field";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 40),
                 Container(
@@ -104,7 +80,7 @@ class NewRoomFormState extends State<NewRoomForm> {
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
                       child: Text(
-                        "Create Room",
+                        "Create Employee",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -142,15 +118,13 @@ class NewRoomFormState extends State<NewRoomForm> {
   }
 
   onPressedCreate() async {
-    Room entry = Room();
+    Employee entry = Employee();
     entry.name = nameController.text;
-    entry.type = dropdownValue;
-    entry.occupied = 0;
-    entry.cid = -1;
+    entry.phone = phoneController.text;
 
-    var db = RoomDBProvider.db;
-    db.newRoom(entry);
-    List<Room> temp = await db.getAllRoom();
+    var db = EmployeeDBProvider.db;
+    db.newEmployee(entry);
+    List<Employee> temp = await db.getAllEmployee();
     print(temp.length);
 
     Navigator.pop(context);
