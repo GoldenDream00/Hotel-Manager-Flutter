@@ -185,7 +185,9 @@ class _UserLoginState extends State<UserLogin> {
     User entry = await db.searchuser(name);
     if (pass == entry.password) {
       msg = "";
-      Navigator.pushNamed(context, '/userHome',
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          '/userHome', ModalRoute.withName('/'),
           arguments: UserArguments(entry));
     } else {
       setState(() {

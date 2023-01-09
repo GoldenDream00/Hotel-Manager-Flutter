@@ -147,7 +147,7 @@ class _RoomDetailState extends State<RoomDetail> {
               child: const Text('Continue'),
               onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/userHome', ModalRoute.withName('/userHome'),
+                    '/userHome', ModalRoute.withName('/'),
                     arguments: UserArguments(widget.user));
               },
             ),
