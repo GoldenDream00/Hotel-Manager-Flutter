@@ -8,7 +8,7 @@
             "name": "HotelApp",
             "request": "launch",
             "type": "dart",
-            "program": "lib/UI/main.dart"
+            "program": "lib/main.dart"
         },
         {
             "name": "HotelApp (profile mode)",

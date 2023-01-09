@@ -181,6 +181,10 @@ class _RoomPageState extends State<RoomPage> {
   }
 
   updateRoomTypes(List<Room> data) {
+    roomVacancy["Single"] = 0;
+    roomVacancy["Double"] = 0;
+    roomVacancy["Suite"] = 0;
+    roomVacancy["Luxury"] = 0;
     for (int i = 0; i < data.length; i++) {
       if (data[i].occupied == 0) {
         roomVacancy[data[i].type] = roomVacancy[data[i].type]! + 1;

@@ -136,9 +136,10 @@ class _RoomDetailState extends State<RoomDetail> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(dialogTitle),
           backgroundColor: darkGreen1,
-          content: Text(dialogDesc),
+          title: Text(dialogTitle, style: const TextStyle(color: Colors.white)),
+          content:
+              Text(dialogDesc, style: const TextStyle(color: Colors.white)),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
           actions: <Widget>[

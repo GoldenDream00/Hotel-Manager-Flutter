@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotelapp/Utils/global.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
@@ -24,7 +25,7 @@ class _AdminLoginState extends State<AdminLogin> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: const Color.fromARGB(255, 31, 42, 27),
+        backgroundColor: darkGreen1,
         elevation: 0,
       ),
       body: Container(
