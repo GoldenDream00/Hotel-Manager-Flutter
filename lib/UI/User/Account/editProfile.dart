@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:hotelapp/Data/user.dart';
-import 'package:hotelapp/Services/userDB.dart';
+import '../../../Data/user.dart';
+import '../../../Services/userDB.dart';
+import '../../../Utils/global.dart';
 
-import '../../Utils/global.dart';
-
-class UserSignUp extends StatefulWidget {
-  const UserSignUp({super.key});
+class UserEdit extends StatefulWidget {
+  final User user;
+  const UserEdit({super.key, required this.user});
 
   @override
-  State<UserSignUp> createState() => _UserSignUpState();
+  State<UserEdit> createState() => _UserEditState();
 }
 
-class _UserSignUpState extends State<UserSignUp> {
+class _UserEditState extends State<UserEdit> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController userController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    userController.text = widget.user.name;
+    passController.text = widget.user.password;
+    phoneController.text = widget.user.phone;
+    emailController.text = widget.user.email;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +53,7 @@ class _UserSignUpState extends State<UserSignUp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Create Account",
+                  "Edit \nProfile",
                   style: TextStyle(
                     fontSize: 48,
                     height: 1.1,
@@ -52,7 +61,7 @@ class _UserSignUpState extends State<UserSignUp> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 40),
                 TextFormField(
                   controller: userController,
                   style: formTextDecoration,
@@ -160,17 +169,13 @@ class _UserSignUpState extends State<UserSignUp> {
   }
 
   void onPressedSubmit() async {
-    User entry = User();
-    entry.name = userController.text;
-    entry.password = passController.text;
-    entry.phone = phoneController.text;
-    entry.email = emailController.text;
+    widget.user.name = userController.text;
+    widget.user.password = passController.text;
+    widget.user.phone = phoneController.text;
+    widget.user.email = emailController.text;
 
     var db = UserDBProvider.db;
-    db.newUser(entry);
-
-    List<User> temp = await db.getAllUser();
-    print(temp.length);
+    db.updateUser(widget.user);
 
     // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
