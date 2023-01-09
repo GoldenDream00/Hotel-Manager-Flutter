@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../Utils/global.dart';
 import 'Account/account.dart';
+import 'Dish/dish.dart';
 import 'Room/room.dart';
 
 class UserHome extends StatefulWidget {
@@ -45,18 +46,14 @@ class _UserHomeState extends State<UserHome> {
             backgroundColor: darkGreen1,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.people_outlined),
-            label: 'Orders',
-            backgroundColor: darkGreen1,
-          ),
-          BottomNavigationBarItem(
             icon: const Icon(Icons.account_circle_outlined),
             label: 'Account',
             backgroundColor: darkGreen1,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
+        backgroundColor: darkGreen1,
+        selectedItemColor: Colors.lightGreen,
         unselectedItemColor: Colors.white54,
         onTap: _onItemTapped,
       ),
@@ -66,8 +63,7 @@ class _UserHomeState extends State<UserHome> {
   // ignore: prefer_final_fields
   late List<Widget> _widgetOptions = <Widget>[
     RoomPage(user: args.entry),
-    const Text('Index 2: Food Menu', style: optionStyle),
-    const Text('Index 3: Orders', style: optionStyle),
+    const Dish(),
     Account(user: args.entry),
   ];
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hotelapp/Services/userDB.dart';
 import 'package:hotelapp/Utils/global.dart';
 import '../../../Data/room.dart';
+import '../../../Data/user.dart';
 import '../../../Services/roomDB.dart';
 
 class UpdateRoomForm extends StatefulWidget {
@@ -14,6 +16,7 @@ class UpdateRoomForm extends StatefulWidget {
 class UpdateRoomFormState extends State<UpdateRoomForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController customerController = TextEditingController();
   var db = RoomDBProvider.db;
   String dropdownValue = type.first;
 
@@ -29,6 +32,8 @@ class UpdateRoomFormState extends State<UpdateRoomForm> {
     super.initState();
     nameController.text = widget.entry.name;
     dropdownValue = type.elementAt(type.indexOf(widget.entry.type));
+    customerController.text = "- - -";
+    findCustomer();
   }
 
   @override
@@ -39,102 +44,118 @@ class UpdateRoomFormState extends State<UpdateRoomForm> {
       content: Container(
         width: 300,
         padding: const EdgeInsets.symmetric(vertical: 24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Edit Room",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                        color: Colors.white,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Edit Room",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete_outline),
-                      onPressed: () => onPressedDelete(),
-                      color: Colors.red,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-              TextFormField(
-                controller: nameController,
-                style: formTextDecoration,
-                cursorColor: Colors.lightGreen,
-                decoration: formFieldDecoration("Room No."),
-                validator: (text) {
-                  if (text == null || text.isEmpty) {
-                    return "*This is a required Field";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white12,
-                  borderRadius: BorderRadius.circular(100.0),
-                ),
-                child: DropdownButtonFormField(
-                  value: dropdownValue,
-                  dropdownColor: darkGreen2,
-                  decoration: const InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () => onPressedDelete(),
+                        color: Colors.red,
+                      ),
+                    ],
                   ),
-                  icon: const Icon(Icons.arrow_drop_down),
-                  style: const TextStyle(color: Colors.white),
-                  onChanged: (String? value) {
-                    setState(() {
-                      dropdownValue = value!;
-                    });
-                  },
-                  items: type.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: formTextDecoration,
-                      ),
-                    );
-                  }).toList(),
                 ),
-              ),
-              const SizedBox(height: 40),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      onPressedUpdate();
+                const SizedBox(height: 32),
+                TextFormField(
+                  controller: nameController,
+                  style: formTextDecoration,
+                  cursorColor: Colors.lightGreen,
+                  decoration: formFieldDecoration("Room No."),
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return "*This is a required Field";
                     }
+                    return null;
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Text(
-                      "Update Room",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white12,
+                    borderRadius: BorderRadius.circular(100.0),
+                  ),
+                  child: DropdownButtonFormField(
+                    value: dropdownValue,
+                    dropdownColor: darkGreen2,
+                    decoration: const InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+                    ),
+                    icon: const Icon(Icons.arrow_drop_down),
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (String? value) {
+                      setState(() {
+                        dropdownValue = value!;
+                      });
+                    },
+                    items: type.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: formTextDecoration,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: customerController,
+                  style: formTextDecoration,
+                  enabled: false,
+                  cursorColor: Colors.lightGreen,
+                  decoration: formFieldDecoration("Occupied Customer"),
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return "*This is a required Field";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 40),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        onPressedUpdate();
+                      }
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        "Update Room",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -143,6 +164,13 @@ class UpdateRoomFormState extends State<UpdateRoomForm> {
 
   onPressedCancel() {
     Navigator.pop(context);
+  }
+
+  findCustomer() async {
+    User user = await UserDBProvider.db.getUser(widget.entry.cid);
+    if (user != Null) {
+      customerController.text = user.name;
+    }
   }
 
   onPressedUpdate() async {

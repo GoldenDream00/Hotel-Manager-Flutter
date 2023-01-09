@@ -47,13 +47,24 @@ class RoomDBProvider {
   searchRoom(int cid) async {
     final db = await database;
     var res = await db.query(table, where: "cid = ?", whereArgs: [cid]);
-    return res.isNotEmpty ? Room.fromMap(res.first) : Null;
+    List<Room> list =
+        res.isNotEmpty ? res.map((c) => Room.fromMap(c)).toList() : [];
+    return list;
   }
 
   getRoom(int id) async {
     final db = await database;
     var res = await db.query(table, where: "id = ?", whereArgs: [id]);
     return res.isNotEmpty ? Room.fromMap(res.first) : Null;
+  }
+
+  findRoomsofType(String type) async {
+    final db = await database;
+    var res = await db
+        .query(table, where: "type = ? and occupied = 0", whereArgs: [type]);
+    List<Room> list =
+        res.isNotEmpty ? res.map((c) => Room.fromMap(c)).toList() : [];
+    return list;
   }
 
   updateRoom(Room entry) async {

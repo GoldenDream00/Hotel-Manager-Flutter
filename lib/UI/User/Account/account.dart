@@ -36,6 +36,15 @@ class _AccountState extends State<Account> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Text(
+                    'Settings',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
@@ -58,6 +67,7 @@ class _AccountState extends State<Account> {
                         Text(
                           snapshot.data.name,
                           overflow: TextOverflow.ellipsis,
+                          softWrap: true,
                           style: const TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,

@@ -39,13 +39,14 @@ class RoomTileState extends State<RoomTile> {
             style: textDecoration,
           ),
           IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => widget.updateRoomDialog(context, widget.entry),
-              icon: const Icon(
-                Icons.edit_outlined,
-                color: Colors.lightGreen,
-                size: 20,
-              ))
+            padding: EdgeInsets.zero,
+            onPressed: () => widget.updateRoomDialog(context, widget.entry),
+            icon: const Icon(
+              Icons.edit_outlined,
+              color: Colors.lightGreen,
+              size: 20,
+            ),
+          ),
         ],
       ),
     );

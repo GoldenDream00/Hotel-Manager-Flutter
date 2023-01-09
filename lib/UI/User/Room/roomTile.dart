@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:hotelapp/Data/room.dart';
-import 'package:hotelapp/Utils/global.dart';
-
-typedef updateCallback = void Function(BuildContext context, Room entry);
+import '../../../Data/room.dart';
+import '../../../Data/user.dart';
+import '../../../Utils/global.dart';
+import 'roomDetail.dart';
 
 class RoomTile extends StatefulWidget {
   final String name;
+  final String description;
   final int num;
-  RoomTile({super.key, required this.name, required this.num});
+  final User user;
+  RoomTile(
+      {super.key,
+      required this.name,
+      required this.num,
+      required this.user,
+      required this.description});
 
   @override
   RoomTileState createState() => RoomTileState();
@@ -71,7 +78,7 @@ class RoomTileState extends State<RoomTile> {
                 SizedBox(
                   width: 92,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => moveToRoomDetail(context),
                     style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(), elevation: 0),
                     child: const Padding(
@@ -94,19 +101,16 @@ class RoomTileState extends State<RoomTile> {
     );
   }
 
-  circleOn() {
-    return const Icon(
-      Icons.check_box_rounded,
-      color: Colors.lightGreen,
-      size: 20,
-    );
-  }
-
-  circleOff() {
-    return const Icon(
-      Icons.remove,
-      color: Colors.white54,
-      size: 20,
-    );
+  moveToRoomDetail(BuildContext context) {
+    return Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RoomDetail(
+            user: widget.user,
+            name: widget.name,
+            num: widget.num,
+            description: widget.description,
+          ),
+        )).then((value) => setState(() {}));
   }
 }
