@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotelapp/UI/Admin/home.dart';
+import 'package:hotelapp/UI/User/home.dart';
 import 'package:hotelapp/UI/onboard.dart';
 
 void main() {
@@ -12,11 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/adminHome',
+      initialRoute: '/',
       routes: {
         '/': (context) => const OnBoard(),
-        '/userHome': (context) => const OnBoard(),
         '/adminHome': (context) => const AdminHome(),
+        '/userHome': (context) => const UserHome(),
       },
       theme: ThemeData(
         primarySwatch: Colors.lightGreen,

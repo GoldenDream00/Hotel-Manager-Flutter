@@ -185,7 +185,8 @@ class _UserLoginState extends State<UserLogin> {
     User entry = await db.searchuser(name);
     if (pass == entry.password) {
       msg = "";
-      print(entry.id);
+      Navigator.pushNamed(context, '/userHome',
+          arguments: UserArguments(entry));
     } else {
       setState(() {
         msg = "Username or password is incorrect";

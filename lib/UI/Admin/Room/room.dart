@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hotelapp/Data/room.dart' as data;
+import 'package:hotelapp/Data/room.dart';
 import 'package:hotelapp/Utils/global.dart';
 import '../../../Services/roomDB.dart';
 import 'newDialog.dart';
 import 'roomTile.dart';
 import 'updateDialog.dart';
 
-class Room extends StatefulWidget {
-  const Room({super.key});
+class RoomPage extends StatefulWidget {
+  const RoomPage({super.key});
 
   @override
-  State<Room> createState() => _RoomState();
+  State<RoomPage> createState() => _RoomPageState();
 }
 
-class _RoomState extends State<Room> {
+class _RoomPageState extends State<RoomPage> {
   @override
   void initState() {
     super.initState();
@@ -82,7 +82,7 @@ class _RoomState extends State<Room> {
     ).then((value) => setState(() {}));
   }
 
-  updateRoomDialog(BuildContext context, data.Room entry) {
+  updateRoomDialog(BuildContext context, Room entry) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
