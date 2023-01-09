@@ -31,7 +31,7 @@ class _AdminLoginState extends State<AdminLogin> {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        color: const Color.fromARGB(255, 31, 42, 27),
+        color: darkGreen1,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
