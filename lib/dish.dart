@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hotelapp/Utils/global.dart';
-import '../../../Services/dishDB.dart';
+import 'Utils/global.dart';
+import 'package:hotelapp/newDialog.dart';
+import 'Services/dishDB.dart';
 import 'dishTile.dart';
 
 class Dish extends StatefulWidget {
@@ -20,8 +21,15 @@ class _DishState extends State<Dish> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: darkGreen2,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 0,
+        backgroundColor: darkGreen2,
+      ),
+      body: RefreshIndicator(
+        onRefresh: refresher,
+        child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: FutureBuilder(
           future: DishDBProvider.db.getAllDish(),
@@ -30,10 +38,12 @@ class _DishState extends State<Dish> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Food Menu',
+                  const SizedBox(height: 40),
+                  const Text('2D to 3D \nConvertor',
                       style: TextStyle(
                         fontSize: 40,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
+                        height: 1.25,
                         color: Colors.white,
                       )),
                   const SizedBox(height: 24),
@@ -55,6 +65,34 @@ class _DishState extends State<Dish> {
             }
           },
         ),
+      ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: customFAB(context),
+      bottomNavigationBar: const BottomAppBar(
+        color: Color.fromARGB(255, 41, 47, 39),
+        height: 64,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 12,
+        elevation: 12,
+      ),
+    );
+  }
+
+  Future refresher() async {
+    setState(() {
+      DishDBProvider.db.getAllDish();
+    });
+    return Future<void>.delayed(const Duration(seconds: 1));
+  }
+
+  customFAB(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => NewDishForm())),
+      child: const Icon(
+        Icons.add,
+        size: 32,
       ),
     );
   }

@@ -1,14 +1,15 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hotelapp/Data/dish.dart';
-import 'package:hotelapp/Utils/global.dart';
+import 'Data/dish.dart';
+import 'Utils/global.dart';
 
 typedef updateCallback = void Function(BuildContext context, Dish entry);
 
 class DishTile extends StatefulWidget {
   final Dish entry;
-  final updateCallback updateDishDialog;
-  DishTile({super.key, required this.entry, required this.updateDishDialog});
+  DishTile({super.key, required this.entry});
 
   @override
   DishTileState createState() => DishTileState();
@@ -21,10 +22,10 @@ class DishTileState extends State<DishTile> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
         color: darkGreen1,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,7 +33,18 @@ class DishTileState extends State<DishTile> {
         children: [
           Row(
             children: [
-              dishPhoto(),
+              Container(
+                width: 64,
+                height: 64,
+                child: ClipOval(
+                  child: Image.file(
+                    File(
+                      widget.entry.photo,
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
               const SizedBox(width: 16),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,22 +53,19 @@ class DishTileState extends State<DishTile> {
                     widget.entry.name,
                     style: textDecoration,
                   ),
-                  Text(
-                    "${widget.entry.type}  |  Stock: ${widget.entry.num.toString()}",
-                    style: subTextDecoration,
-                  ),
+                  TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(50, 30),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        alignment: Alignment.centerLeft),
+                    child: const Text("View Model"),
+                  )
                 ],
               ),
             ],
           ),
-          IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => widget.updateDishDialog(context, widget.entry),
-              icon: const Icon(
-                Icons.edit_outlined,
-                color: Colors.lightGreen,
-                size: 20,
-              ))
         ],
       ),
     );
@@ -73,23 +82,4 @@ class DishTileState extends State<DishTile> {
     color: Colors.white70,
     fontWeight: FontWeight.w400,
   );
-
-  dishPhoto() {
-    return CachedNetworkImage(
-      imageUrl: widget.entry.photo,
-      imageBuilder: (context, imageProvider) => Container(
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-            image: imageProvider,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
-    );
-  }
 }
