@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hotelapp/UI/Admin/home.dart';
-import 'package:hotelapp/UI/User/home.dart';
-import 'package:hotelapp/UI/onboard.dart';
+import 'dish.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,11 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => const OnBoard(),
-        '/adminHome': (context) => const AdminHome(),
-        '/userHome': (context) => const UserHome(),
+        '/': (context) => const Dish(),
       },
       theme: ThemeData(
+        
         primarySwatch: Colors.lightGreen,
         fontFamily: "GeneralSans",
       ),

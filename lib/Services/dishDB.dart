@@ -19,9 +19,7 @@ class DishDBProvider {
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE $table ("
           "id INTEGER PRIMARY KEY,"
-          "num INTEGER,"
           "name TEXT,"
-          "type TEXT,"
           "photo TEXT"
           ")");
     });
@@ -37,7 +35,7 @@ class DishDBProvider {
     final db = await database;
     var res = await db.query(
       table,
-      orderBy: "type ASC, name ASC",
+      orderBy: "id DESC",
     );
     List<Dish> list =
         res.isNotEmpty ? res.map((c) => Dish.fromMap(c)).toList() : [];
